@@ -8,7 +8,8 @@ from chonkie import (
     RecursiveChunker
 )
 from tokenizers import Tokenizer
-from transformers import AutoTokenizer
+#from transformers import AutoTokenizer
+from modelscope import AutoTokenizer
 import pandas as pd
 from dataflow.utils.registry import OPERATOR_REGISTRY
 from dataflow import get_logger
@@ -32,7 +33,9 @@ class KBCChunkGeneratorBatch(OperatorABC):
         self.min_tokens_per_chunk = min_tokens_per_chunk
         tokenizer_name = tokenizer_name
         # 初始化tokenizer和chunker
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+        print("tokernizer name:")
+        print(tokenizer_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name,trust_remote_code=True)
         self.chunker = self._initialize_chunker()
         self.logger = get_logger()
 

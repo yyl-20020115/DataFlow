@@ -26,20 +26,20 @@ class Text2QAPipeline:
         if not cache_path.is_absolute():
             caller_cwd = Path(os.environ.get('PWD', os.getcwd()))
             cache_path = caller_cwd / cache_path
-
+        print("1...")
         self.storage = FileStorage(
             first_entry_file_name=str(cache_path / ".cache" / "gpu" / "text_input.jsonl"),
             cache_path=str(cache_path / ".cache" / "gpu"),
             file_name_prefix="text2qa_step",
             cache_type="json",
         )
-
+        print("2...")
         self.text_splitting_step = KBCChunkGeneratorBatch(
             split_method="token",
             chunk_size=512,
             tokenizer_name="Qwen/Qwen2.5-7B-Instruct",
         )
-
+        print("3...")
         self.extract_format_qa = QAExtractor(
             output_json_file="./.cache/data/qa.json",
         )

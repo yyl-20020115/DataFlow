@@ -390,12 +390,15 @@ def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_
         # 调用 merge_json_jsonl.py 的逻辑
         script1_path = get_dataflow_script_path("merge_json_jsonl.py")
         args1 = [str(input_path), "--cache", str(cache_path_obj)]
-        if not run_script_with_args(script1_path, "JSON/JSONL merging", args1, cwd=str(current_dir)):
-            print(f"{Fore.RED}❌ Step 1: JSON/JSONL merging failed{Style.RESET_ALL}")
-            return False
+        print(script1_path)
+        print(args1)
+        #if not run_script_with_args(script1_path, "JSON/JSONL merging", args1, cwd=str(current_dir)):
+        #    print(f"{Fore.RED}❌ Step 1: JSON/JSONL merging failed{Style.RESET_ALL}")
+        #    return False
 
         # 验证 text_input.jsonl 是否创建成功
         text_input_file = cache_path_obj / ".cache" / "gpu" / "text_input.jsonl"
+        print(text_input_file)
         if not text_input_file.exists():
             print(
                 f"{Fore.RED}❌ text_input.jsonl not created. Check if you have JSON/JSONL files in {input_path}{Style.RESET_ALL}")

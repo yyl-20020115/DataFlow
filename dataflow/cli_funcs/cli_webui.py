@@ -44,9 +44,11 @@ def _pick_zip(release: dict) -> Tuple[str, str, str]:
 
 
 def _ask_base_dir(default: Path) -> Path:
-    _echo(f"Default download directory: {default}", "cyan")
-    ans = input(f"Download directory [{default}]: ").strip()
-    return (Path(ans).expanduser().resolve() if ans else default.resolve())
+    #_echo(f"Default download directory: {default}", "cyan")
+    #ans = input(f"Download directory [{default}]: ").strip()a
+    #MODIFIED: by Yilin
+    return default.resolve()
+    #return (Path(ans).expanduser().resolve() if ans else default.resolve())
 
 def _open_browser(url: str) -> None:
     try:
@@ -196,8 +198,9 @@ def cli_webui(
     host: str = "0.0.0.0",
     port: int = 8000,
 ) -> None:
-    _confirm_yes()
-
+    #_confirm_yes()
+    #print("Please start webui manually!")
+    #return 
     # 优先级：zip_path > webui_path > 云端下载交互
     if zip_path is not None:
         # ---- Case A: 本地 zip（自动解压并运行）----
@@ -252,9 +255,9 @@ def cli_webui(
         tag, name, url = _load_latest_release()
         _echo(f"Latest release: {tag} ({name})", "green")
 
-        if not _ask_yes(f"Download latest release {tag} now?", default_no=True):
-            _echo("Cancelled. No zip-path/webui-path provided and you chose not to download.", "yellow")
-            return
+        #if not _ask_yes(f"Download latest release {tag} now?", default_no=True):
+        #    _echo("Cancelled. No zip-path/webui-path provided and you chose not to download.", "yellow")
+        #    return
 
         # 确认下载路径（base dir）
         base_dir = _ask_base_dir(Path.cwd() / "dataflow_webui")
@@ -270,12 +273,12 @@ def cli_webui(
         # 若 zip 已存在：询问 overwrite download
         if zip_path.exists() and zip_path.stat().st_size > 0:
             _echo(f"Found existing zip: {zip_path}", "yellow")
-            if _ask_yes("Overwrite and re-download this zip?", default_no=True):
-                zip_path.unlink(missing_ok=True)
-                _echo(f"Re-downloading → {zip_path}", "cyan")
-                _download_with_progress(url, zip_path)
-            else:
-                _echo("Using existing zip (skip download).", "green")
+            #if _ask_yes("Overwrite and re-download this zip?", default_no=True):
+            #    zip_path.unlink(missing_ok=True)
+            #    _echo(f"Re-downloading → {zip_path}", "cyan")
+            #    _download_with_progress(url, zip_path)
+            #else:
+            _echo("Using existing zip (skip download).", "green")
         else:
             _echo(f"Downloading: {name}", "cyan")
             _download_with_progress(url, zip_path)
