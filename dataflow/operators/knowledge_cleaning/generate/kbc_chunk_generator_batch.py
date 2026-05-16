@@ -31,7 +31,9 @@ class KBCChunkGeneratorBatch(OperatorABC):
         self.chunk_overlap = chunk_overlap
         self.split_method = split_method
         self.min_tokens_per_chunk = min_tokens_per_chunk
-        tokenizer_name = tokenizer_name
+
+        #tokenizer_name ='Qwen/Qwen2.5-7B-Instruct-AWQ'
+        self.tokenizer_name =tokenizer_name
         # 初始化tokenizer和chunker
         print("tokernizer name:")
         print(tokenizer_name)
