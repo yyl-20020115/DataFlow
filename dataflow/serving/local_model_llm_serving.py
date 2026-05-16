@@ -80,7 +80,7 @@ class LocalModelLLMServing_vllm(LLMServingABC):
             self.logger.info(f"Using local model path: {self.hf_model_name_or_path}")
             self.real_model_path = self.hf_model_name_or_path
         else:
-            self.logger.info(f"Downloading model from HuggingFace: {self.hf_model_name_or_path}")
+            self.logger.info(f"Downloading model from HuggingFace: {self.hf_model_name_or_path}, CACHE:{self.hf_cache_dir}. LOCAL:{self.hf_local_dir}")
             self.real_model_path = snapshot_download(
                 repo_id=self.hf_model_name_or_path,
                 cache_dir=self.hf_cache_dir,

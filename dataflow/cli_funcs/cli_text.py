@@ -393,8 +393,8 @@ def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_
         print(script1_path)
         print(args1)
         #if not run_script_with_args(script1_path, "JSON/JSONL merging", args1, cwd=str(current_dir)):
-        #    print(f"{Fore.RED}❌ Step 1: JSON/JSONL merging failed{Style.RESET_ALL}")
-        #    return False
+        #   print(f"{Fore.RED}❌ Step 1: JSON/JSONL merging failed{Style.RESET_ALL}")
+        #   return False
 
         # 验证 text_input.jsonl 是否创建成功
         text_input_file = cache_path_obj / ".cache" / "gpu" / "text_input.jsonl"

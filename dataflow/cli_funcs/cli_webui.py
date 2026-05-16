@@ -224,14 +224,14 @@ def cli_webui(
         # 解压：若已存在则询问是否覆盖提取
         if extract_dir.exists():
             _echo(f"Found existing extracted dir: {extract_dir}", "yellow")
-            if _ask_yes("Overwrite and re-extract?", default_no=True):
-                shutil.rmtree(extract_dir)
-                _echo(f"Extracting → {extract_dir}", "cyan")
-                extract_dir.mkdir(parents=True, exist_ok=True)
-                with zipfile.ZipFile(zip_path, "r") as zf:
-                    zf.extractall(extract_dir)
-            else:
-                _echo("Using existing extracted files (skip extract).", "green")
+            #if _ask_yes("Overwrite and re-extract?", default_no=True):
+            #    shutil.rmtree(extract_dir)
+            #    _echo(f"Extracting → {extract_dir}", "cyan")
+            #    extract_dir.mkdir(parents=True, exist_ok=True)
+            #    with zipfile.ZipFile(zip_path, "r") as zf:
+            #        zf.extractall(extract_dir)
+            #else:
+            _echo("Using existing extracted files (skip extract).", "green")
         else:
             _echo(f"Extracting → {extract_dir}", "cyan")
             extract_dir.mkdir(parents=True, exist_ok=True)
@@ -289,14 +289,14 @@ def cli_webui(
         # 若解压目录存在：询问是否覆盖提取
         if extract_dir.exists():
             _echo(f"Found existing extracted dir: {extract_dir}", "yellow")
-            if _ask_yes("Overwrite and re-extract?", default_no=True):
-                shutil.rmtree(extract_dir)
-                _echo(f"Extracting → {extract_dir}", "cyan")
-                extract_dir.mkdir(parents=True, exist_ok=True)
-                with zipfile.ZipFile(zip_path, "r") as zf:
-                    zf.extractall(extract_dir)
-            else:
-                _echo("Using existing extracted files (skip extract).", "green")
+            #if _ask_yes("Overwrite and re-extract?", default_no=True):
+            #    shutil.rmtree(extract_dir)
+            #    _echo(f"Extracting → {extract_dir}", "cyan")
+            #    extract_dir.mkdir(parents=True, exist_ok=True)
+            #    with zipfile.ZipFile(zip_path, "r") as zf:
+            #        zf.extractall(extract_dir)
+            #else:
+            _echo("Using existing extracted files (skip extract).", "green")
         else:
             _echo(f"Extracting → {extract_dir}", "cyan")
             extract_dir.mkdir(parents=True, exist_ok=True)

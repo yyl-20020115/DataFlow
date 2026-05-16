@@ -120,10 +120,13 @@ class KBCChunkGeneratorBatch(OperatorABC):
         # try:
         self.input_key = input_key
         self.output_key = output_key
+        print(storage)
         dataframe = storage.read("dataframe")
         self._validate_dataframe(dataframe)
 
-        text_paths = dataframe[self.input_key].tolist()
+        #text_paths = dataframe[self.input_key].tolist()
+
+        text_paths = [storage.first_entry_file_name]
         texts = self._load_text(text_paths)
         output_paths = []
 
@@ -170,7 +173,7 @@ class KBCChunkGeneratorBatch(OperatorABC):
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(output_paths)
         print("<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        dataframe[self.output_key] = output_paths
+        dataframe[self.output_key] = output_paths[0]
         output_file = storage.write(dataframe)
         self.logger.info(
             f"Successfully split text into {len(chunks)} chunks. Saved to {output_file}")
