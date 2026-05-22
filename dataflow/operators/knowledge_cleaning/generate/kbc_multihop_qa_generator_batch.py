@@ -226,6 +226,7 @@ class KBCMultiHopQAGeneratorBatch(OperatorABC):
                 texts = []
 
                 if str(chunk_path).endswith(".json"):
+                    #printf(chunk_path)
                     with open(chunk_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
                     texts = [item["cleaned_chunk"] for item in data]
@@ -233,6 +234,7 @@ class KBCMultiHopQAGeneratorBatch(OperatorABC):
                 elif str(chunk_path).endswith(".jsonl"):
                     with open(chunk_path, "r", encoding="utf-8") as f:
                         data = [json.loads(line) for line in f]
+                    #MODIFIED: by Yilin cleaned_chuck->cleaned_chunk_path
                     texts = [item["cleaned_chunk"] for item in data]
 
                 else:

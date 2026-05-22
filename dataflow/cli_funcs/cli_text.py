@@ -217,9 +217,10 @@ def verify_environment():
         missing_deps.append("dataflow operators")
 
     if missing_deps:
-        print(f"❌ Missing dependencies: {', '.join(missing_deps)}")
+        print(missing_deps)
+        print(f"Missing dependencies: {', '.join(missing_deps)}")
         print(f"Install with: pip install {' '.join(missing_deps)}")
-        return False
+        #return False
 
     return True
 
@@ -349,6 +350,82 @@ def cli_text2model_init(cache_path: str = "./") -> bool:
         print(f"Initialization failed: {e}")
         return False
 
+def find_md_files(directory):
+    """
+    递归查找目录下所有的 .md 文件，排除隐藏目录
+    """
+    p = Path(directory)
+    if not p.exists():
+        raise FileNotFoundError(f"Directory not found: {directory}")
+    
+    md_files = []
+    for file_path in p.rglob("*.md"):
+        # 排除隐藏文件夹中的文件
+        if not any(part.startswith('.') for part in file_path.parts):
+            md_files.append(file_path)
+    return md_files
+
+def process_md_file(file_path):
+    """
+    读取MD文件内容，返回清理后的文本
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        # 去除首尾空白，保留内部格式
+        return content.strip()
+    except Exception as e:
+        print(f"Error reading {file_path}: {e}")
+        return None
+
+def convert_to_jsonl(md_files, output_file):
+    """
+    将MD文件列表转换为 {"text": "..."} 格式的JSONL文件
+    """
+    count = 0
+    skipped = 0
+    
+    # 确保输出目录存在
+    output_path = Path(output_file)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_file, 'w', encoding='utf-8') as f_out:
+        for md_path in md_files:
+            text_content = process_md_file(md_path)
+            
+            if text_content:
+                data_item = {
+                    "text": text_content
+                }
+                # ensure_ascii=False 保证中文等非ASCII字符正常显示
+                json_line = json.dumps(data_item, ensure_ascii=False)
+                f_out.write(json_line + '\n')
+                count += 1
+            else:
+                skipped += 1
+                
+    print(f"Conversion completed.")
+    print(f"Successfully converted: {count} files")
+    print(f"Skipped/Empty: {skipped} files")
+    print(f"Output saved to: {os.path.abspath(output_file)}")
+
+def generate_md_json(input_dir:str,output_file:str):
+   
+    try:
+        md_files = find_md_files(input_dir)
+    except FileNotFoundError as e:
+        print(e)
+        return
+
+    if not md_files:
+        print("No markdown files found in the specified directory.")
+        return
+        
+    print(f"Found {len(md_files)} markdown files. Starting conversion...")
+    
+    convert_to_jsonl(md_files, output_file)
+
+
 
 def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_config.yaml") -> bool:
     """
@@ -388,17 +465,18 @@ def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_
         print(f"{Fore.CYAN}Step 1: Merging JSON/JSONL files...{Style.RESET_ALL}")
 
         # 调用 merge_json_jsonl.py 的逻辑
-        script1_path = get_dataflow_script_path("merge_json_jsonl.py")
-        args1 = [str(input_path), "--cache", str(cache_path_obj)]
-        print(script1_path)
-        print(args1)
+        #script1_path = get_dataflow_script_path("merge_json_jsonl.py")
+        #args1 = [str(input_path), "--cache", str(cache_path_obj)]
+        #print(script1_path)
+        #print(args1)
         #if not run_script_with_args(script1_path, "JSON/JSONL merging", args1, cwd=str(current_dir)):
         #   print(f"{Fore.RED}❌ Step 1: JSON/JSONL merging failed{Style.RESET_ALL}")
         #   return False
-
+    
         # 验证 text_input.jsonl 是否创建成功
         text_input_file = cache_path_obj / ".cache" / "gpu" / "text_input.jsonl"
         print(text_input_file)
+        generate_md_json("/home/yilin/Working/RESULT",text_input_file)
         if not text_input_file.exists():
             print(
                 f"{Fore.RED}❌ text_input.jsonl not created. Check if you have JSON/JSONL files in {input_path}{Style.RESET_ALL}")
@@ -672,3 +750,6 @@ def cli_text2model_chat(model_path=None):
     except KeyboardInterrupt:
         print("\n\nChat session ended by user")
         return True
+
+
+

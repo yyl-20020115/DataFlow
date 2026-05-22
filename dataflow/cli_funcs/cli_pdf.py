@@ -438,7 +438,7 @@ def verify_environment():
         missing_deps.append("pyyaml")
 
     if missing_deps:
-        print(f"❌ Missing dependencies: {', '.join(missing_deps)}")
+        print(f"❌ !!-Missing dependencies: {', '.join(missing_deps)}")
         print(f"Install with: pip install {' '.join(missing_deps)}")
         return False
 

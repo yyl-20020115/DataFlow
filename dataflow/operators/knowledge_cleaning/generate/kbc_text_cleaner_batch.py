@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from dataflow.prompts.kbcleaning import KnowledgeCleanerPrompt
 import pandas as pd
 from dataflow.utils.registry import OPERATOR_REGISTRY
@@ -119,9 +121,17 @@ class KBCTextCleanerBatch(OperatorABC):
         dataframe = storage.read("dataframe")
         self._validate_dataframe(dataframe)
         chunk_paths = dataframe[self.input_key].tolist()
-
+        # USE INDEX
+        result_paths = []
+        i :int = 0
+        #MODIFIED: by Yilin
         for chunk_path in chunk_paths:
-            if(chunk_path):
+            result_paths.append(Path(str(chunk_path)))
+            i = i + 1
+
+        print(result_paths)
+        for result_path in result_paths:
+            if(result_path):
                 raw_chunks, formatted_prompts = self._reformat_prompt_from_path(chunk_path)
                 cleaned = self.llm_serving.generate_from_input(formatted_prompts, "")
 
@@ -137,11 +147,11 @@ class KBCTextCleanerBatch(OperatorABC):
                     "cleaned_chunk": cleaned_chunk
                 } for raw_chunk, cleaned_chunk in zip(raw_chunks, cleaned_extracted)]
 
-                with open(chunk_path, "w", encoding="utf-8") as f:
+                with open(result_path, "w", encoding="utf-8") as f:
                     json.dump(json_items, f, ensure_ascii=False, indent=4)
                 self.logger.info(f"Successfully cleaned contents in {chunk_path}")
                 
-        dataframe[self.output_key] = chunk_paths
+        dataframe[self.output_key] = result_paths
         output_file = storage.write(dataframe)
         self.logger.info(f"Results saved to {output_file}")
 

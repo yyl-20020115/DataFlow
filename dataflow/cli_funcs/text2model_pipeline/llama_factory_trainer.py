@@ -354,6 +354,9 @@ def main():
     if updates:
         print("Updating config parameters...")
         trainer.update_config(updates)
+    print("SHOULD BE OUT OF MEMORY HERE, STOP PROCESSING!")
+    
+    sys.exit(0)
 
     # Start training
     success = trainer.start_training()

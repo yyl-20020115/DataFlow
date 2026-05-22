@@ -4,6 +4,8 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/dataflow/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/build/bdist.linux-x86_64/wheel/dataflow/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/build/lib/dataflow/.venv" />
     </content>
     <orderEntry type="jdk" jdkName="uv (DataFlow)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
