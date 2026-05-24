@@ -62,12 +62,12 @@ class Text2QAPipeline:
 
         self.knowledge_cleaning_step = KBCTextCleanerBatch(
             llm_serving=self.llm_serving,
-            lang="en"
+            lang="zh"
         )
 
         self.qa_generation_step = KBCMultiHopQAGeneratorBatch(
             llm_serving=self.llm_serving,
-            lang="en"
+            lang="zh"
         )
 
         print("Step 2: Knowledge cleaning...")

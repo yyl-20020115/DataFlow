@@ -224,9 +224,9 @@ class KBCMultiHopQAGeneratorBatch(OperatorABC):
         for chunk_path in chunk_paths:
             if(chunk_path):
                 texts = []
+                printf(chunk_path)
 
                 if str(chunk_path).endswith(".json"):
-                    #printf(chunk_path)
                     with open(chunk_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
                     texts = [item["cleaned_chunk"] for item in data]

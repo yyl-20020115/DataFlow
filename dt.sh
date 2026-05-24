@@ -1,4 +1,4 @@
 export FLASHINFER_DISABLE_VERSION_CHECK=1
-
-dataflow text2model train
-
+#conda activate df
+source .venv/bin/activate
+dataflow text2model train /home/yilin/Working/RESULT

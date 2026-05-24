@@ -427,7 +427,7 @@ def generate_md_json(input_dir:str,output_file:str):
 
 
 
-def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_config.yaml") -> bool:
+def cli_text2model_train(input_folder:str, input_keys: str = None, lf_yaml: str = "./.cache/train_config.yaml") -> bool:
     """
     Start Text2Model training using complete pipeline
     """
@@ -475,8 +475,9 @@ def cli_text2model_train(input_keys: str = None, lf_yaml: str = "./.cache/train_
     
         # 验证 text_input.jsonl 是否创建成功
         text_input_file = cache_path_obj / ".cache" / "gpu" / "text_input.jsonl"
+        generate_md_json(input_folder,text_input_file)
+        print(input_folder)
         print(text_input_file)
-        generate_md_json("/home/yilin/Working/RESULT",text_input_file)
         if not text_input_file.exists():
             print(
                 f"{Fore.RED}❌ text_input.jsonl not created. Check if you have JSON/JSONL files in {input_path}{Style.RESET_ALL}")

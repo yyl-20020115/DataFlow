@@ -39,12 +39,12 @@ class QAExtractor(OperatorABC):
                 "输出符合Stanford Alpaca标准的instruction-input-output格式。\n\n"
                 "初始化参数:\n"
                 "• output_json_file: 输出JSON文件路径 (可选，不指定则只更新DataFrame)\n"
-                "• input_instruction: 统一的指令前缀 (默认: 'Please answer the following question...')\n\n"
+                "• input_instruction: 统一的指令前缀 (默认: '请回答如下问题')\n\n"
                 "运行参数 (input_key):\n"
                 "• input_qa_key: QA对的字段名 (默认: 'QA_pairs')\n"
                 "• instruction: 本次运行的具体指令内容 (若不填则使用默认指令)\n"
                 "输出字段:\n"
-                "• output_instruction_key: prompt对应的key (若不填则使用默认字段)\n"
+                "• output_instruction_key: prompt对应的key (若不填则为空串)\n"
                 "• output_question_key: 问题字段 (若不填则使用默认字段)\n"
                 "• output_answer_key: 答案字段 (若不填则使用默认字段)\n\n"
                 "适用场景: 知识库QA微调、领域问答模型训练"
@@ -160,6 +160,8 @@ class QAExtractor(OperatorABC):
                             })
             except Exception as e:
                 self.logger.error(f"加载失败 {file_path}: {e}")
+            #use only one
+            break
 
         if not rows:
             raise ValueError("未找到有效QA数据")
@@ -220,6 +222,7 @@ class QAExtractor(OperatorABC):
                 key_a=output_answer_key
             )
             all_qas.extend(qas)
+        print(qas)
 
         self.logger.info(f"Extracted {len(all_qas)} QA pairs")
 

@@ -128,9 +128,12 @@ class KBCTextCleanerBatch(OperatorABC):
         for chunk_path in chunk_paths:
             result_paths.append(Path(str(chunk_path)))
             i = i + 1
+        #    break
+        #only use one chunk_path
 
-        print(result_paths)
-        for result_path in result_paths:
+        #print(result_paths)
+        #USE ONLY FIRST
+        for result_path in [result_paths[0]]:
             if(result_path):
                 raw_chunks, formatted_prompts = self._reformat_prompt_from_path(chunk_path)
                 cleaned = self.llm_serving.generate_from_input(formatted_prompts, "")
@@ -150,7 +153,7 @@ class KBCTextCleanerBatch(OperatorABC):
                 with open(result_path, "w", encoding="utf-8") as f:
                     json.dump(json_items, f, ensure_ascii=False, indent=4)
                 self.logger.info(f"Successfully cleaned contents in {chunk_path}")
-                
+        print(self.output_key)        
         dataframe[self.output_key] = result_paths
         output_file = storage.write(dataframe)
         self.logger.info(f"Results saved to {output_file}")

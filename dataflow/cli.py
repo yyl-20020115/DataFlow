@@ -404,7 +404,7 @@ def text2model_train(input_dir: Path = typer.Argument(Path("."), help="Input dir
         from dataflow.cli_funcs.cli_text import cli_text2model_train  # type: ignore
         lf = str(lf_yaml) if lf_yaml else "./.cache/train_config.yaml"
         #cli_text2model_train(input_keys=input_keys, lf_yaml=lf, input_dir=str(input_dir))
-        cli_text2model_train(input_keys=input_keys, lf_yaml=lf)
+        cli_text2model_train(input_folder=str(input_dir),input_keys=input_keys, lf_yaml=lf)
     except Exception as e:
         _echo(f"text2model train error: {e}", "red")
         raise typer.Exit(code=1)
